@@ -19,7 +19,12 @@ module KnifeSolo
       path = berkshelf_path
       ui.msg "Installing Berkshelf cookbooks to '#{path}'..."
 
-      berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
+      options = {}
+      if config[:node_environment]
+        options[:only] = config[:node_environment]
+      end
+
+      berksfile = ::Berkshelf::Berksfile.from_file('Berksfile', options)
       if berksfile.respond_to?(:vendor)
         FileUtils.rm_rf(path)
         berksfile.vendor(path)

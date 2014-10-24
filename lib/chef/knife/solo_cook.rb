@@ -210,7 +210,8 @@ class Chef
       end
 
       def berkshelf_install
-        path = KnifeSolo::Berkshelf.new(config, ui).install
+        berks_config = config.merge(:node_environment => node_environment) if node_environment
+        path = KnifeSolo::Berkshelf.new(berks_config, ui).install
         add_cookbook_path(path) if path
       end
 
